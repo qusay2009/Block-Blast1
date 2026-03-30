@@ -1183,6 +1183,26 @@ function createSplashParticles() {
   }
 }
 
+function setAppViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+}
+
+function setupSamsungCompatibility() {
+  setAppViewportHeight();
+  window.addEventListener('resize', setAppViewportHeight, { passive: true });
+  window.addEventListener('orientationchange', setAppViewportHeight, { passive: true });
+
+  const unlockOnce = () => {
+    initAudio();
+    unlockAmbientAudio();
+    document.removeEventListener('touchstart', unlockOnce, true);
+    document.removeEventListener('pointerdown', unlockOnce, true);
+  };
+  document.addEventListener('touchstart', unlockOnce, { passive: true, capture: true });
+  document.addEventListener('pointerdown', unlockOnce, { passive: true, capture: true });
+}
+
 function handleStart() {
   const splash = document.getElementById('splash-screen');
   const btn = document.querySelector('.splash-start-btn');
@@ -1204,6 +1224,7 @@ function handleStart() {
 
 // ===== INIT =====
 window.onload = () => {
+  setupSamsungCompatibility();
   createParticles();
   createSplashParticles();
   initMusicPlayer();
