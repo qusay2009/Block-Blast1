@@ -365,6 +365,7 @@ function renderBoard() {
   const board = document.getElementById('game-board');
   board.innerHTML = '';
   board.onmouseleave = () => clearHighlight();
+  board.ontouchstart = (e) => e.preventDefault();
   for (let r = 0; r < BOARD_SIZE; r++) {
     for (let c = 0; c < BOARD_SIZE; c++) {
       const cell = document.createElement('div');
@@ -376,6 +377,14 @@ function renderBoard() {
       cell.dataset.c = c;
       cell.onclick = () => handleCellClick(r, c);
       cell.onmouseenter = () => handleCellHover(r, c);
+      cell.ontouchstart = (e) => {
+        e.preventDefault();
+        handleCellHover(r, c);
+      };
+      cell.ontouchend = (e) => {
+        e.preventDefault();
+        handleCellClick(r, c);
+      };
       board.appendChild(cell);
     }
   }
@@ -403,6 +412,10 @@ function renderPieces() {
     const wrapper = document.createElement('div');
     wrapper.className = `piece-wrapper${piece.used ? ' used' : ''}${gameState.selectedPiece === idx ? ' selected' : ''}`;
     wrapper.onclick = () => selectPiece(idx);
+    wrapper.ontouchstart = (e) => {
+      e.preventDefault();
+      selectPiece(idx);
+    };
 
     const rows = piece.shape.length;
     const cols = piece.shape[0].length;
@@ -869,30 +882,30 @@ function showToast(msg) {
 
 const TRACKS = [
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.56 PM.mpeg',
-    name: 'Lofi Vibes',
-    artist: 'Lemon Music Lab',
-    art: '🍋',
+    file: 'liecio-valley-of-thoughts-drone-dark-ambient-306432.mp3',
+    name: 'Valley Of Thoughts',
+    artist: 'Liecio',
+    art: '🌌',
     accent: 'var(--c2)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.56 PM (1).mpeg',
-    name: 'Chill Beats',
-    artist: 'Free Music For Video',
+    file: 'meditativetiger-bioluminescent-ambient-nigh-501368.mp3',
+    name: 'Bioluminescent Night',
+    artist: 'MeditativeTiger',
     art: '🌙',
     accent: 'var(--c7)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.57 PM.mpeg',
-    name: 'Good Night',
-    artist: 'Fassounds',
+    file: 'richardmultimedia-ocean-waves-250310.mp3',
+    name: 'Ocean Waves',
+    artist: 'Richard Multimedia',
     art: '✨',
     accent: 'var(--c6)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.57 PM (1).mpeg',
-    name: 'The Mountain',
-    artist: 'The Mountain',
+    file: 'u_7hpxkdroz2-forest-461593.mp3',
+    name: 'Forest',
+    artist: 'u_7hpxkdroz2',
     art: '🏔️',
     accent: 'var(--c3)'
   },
@@ -1038,7 +1051,12 @@ function seekMusic(e) {
   if (!audioEl || !audioEl.duration) return;
   const bar = e.currentTarget;
   const rect = bar.getBoundingClientRect();
-  const pct = (e.clientX - rect.left) / rect.width;
+  const clientX = e.touches && e.touches[0]
+    ? e.touches[0].clientX
+    : e.changedTouches && e.changedTouches[0]
+      ? e.changedTouches[0].clientX
+      : e.clientX;
+  const pct = (clientX - rect.left) / rect.width;
   audioEl.currentTime = pct * audioEl.duration;
 }
 
@@ -1148,9 +1166,46 @@ function createParticles() {
   }
 }
 
+function createSplashParticles() {
+  const particlesContainer = document.getElementById('splash-particles');
+  if (!particlesContainer) return;
+  particlesContainer.innerHTML = '';
+  const colors = ['#FF6B6B', '#4DABF7', '#DA77F2', '#51CF66', '#FFA94D', '#22D3EE', '#FFD700'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'splash-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * 4 + 's';
+    p.style.animationDuration = (3 + Math.random() * 3) + 's';
+    particlesContainer.appendChild(p);
+  }
+}
+
+function handleStart() {
+  const splash = document.getElementById('splash-screen');
+  const btn = document.querySelector('.splash-start-btn');
+  if (!splash || !btn) return;
+
+  btn.disabled = true;
+  btn.style.pointerEvents = 'none';
+  btn.textContent = currentLang === 'ar' ? '⏳ جاري التحميل...' : '⏳ Loading...';
+
+  setTimeout(() => {
+    btn.textContent = currentLang === 'ar' ? '✓ تم!' : '✓ Done!';
+    btn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+    splash.classList.add('hide');
+    setTimeout(() => {
+      splash.style.display = 'none';
+    }, 450);
+  }, 700);
+}
+
 // ===== INIT =====
 window.onload = () => {
   createParticles();
+  createSplashParticles();
   initMusicPlayer();
   loadOrSetup();
 

@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Block Blast - بلوك بلاست</title>
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Tajawal:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;800&family=Tajawal:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -14,6 +14,62 @@
 <div class="aurora aurora-1"></div>
 <div class="aurora aurora-2"></div>
 <div class="stars-layer"></div>
+
+<!-- Splash Screen -->
+<div id="splash-screen" class="splash-screen">
+  <div class="splash-grid-bg"></div>
+  <div class="splash-glow-effect"></div>
+  <div class="splash-bottom-glow"></div>
+  <div class="splash-particles" id="splash-particles"></div>
+
+  <div class="splash-container">
+    <div class="splash-title-container">
+      <div style="position: relative; display: inline-block;">
+        <span class="splash-crown">👑</span>
+        <div class="splash-title">
+          <span class="splash-letter">B</span>
+          <span class="splash-letter">L</span>
+          <span class="splash-letter">O</span>
+          <span class="splash-letter">C</span>
+          <span class="splash-letter">K</span>
+        </div>
+        <div class="splash-title-blast">
+          <span class="splash-blast-letter">B</span>
+          <span class="splash-blast-letter">L</span>
+          <span class="splash-blast-letter">A</span>
+          <span class="splash-blast-letter">S</span>
+          <span class="splash-blast-letter">T</span>
+        </div>
+      </div>
+      <div class="splash-developer">HUNGRY STUDIO™</div>
+    </div>
+
+    <div class="splash-block-stacks">
+      <div class="splash-stack left">
+        <div class="splash-block-row"><div class="splash-mini-block red"></div><div class="splash-mini-block blue"></div><div class="splash-mini-block purple"></div></div>
+        <div class="splash-block-row"><div class="splash-mini-block green"></div><div class="splash-mini-block orange"></div></div>
+        <div class="splash-block-row"><div class="splash-mini-block cyan"></div><div class="splash-mini-block red"></div><div class="splash-mini-block blue"></div></div>
+      </div>
+      <div class="splash-stack right">
+        <div class="splash-block-row"><div class="splash-mini-block orange"></div><div class="splash-mini-block cyan"></div><div class="splash-mini-block green"></div></div>
+        <div class="splash-block-row"><div class="splash-mini-block red"></div><div class="splash-mini-block purple"></div></div>
+        <div class="splash-block-row"><div class="splash-mini-block blue"></div><div class="splash-mini-block orange"></div><div class="splash-mini-block cyan"></div></div>
+      </div>
+    </div>
+
+    <div class="splash-block-container">
+      <div class="splash-falling-block">
+        <div class="splash-speed-lines"><div class="splash-speed-line"></div><div class="splash-speed-line"></div><div class="splash-speed-line"></div></div>
+        <div class="splash-t-block">
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="splash-start-btn" onclick="handleStart()">ابدأ اللعب</button>
+  </div>
+</div>
 
 <!-- Music Player -->
 <div id="music-player" class="music-player">
