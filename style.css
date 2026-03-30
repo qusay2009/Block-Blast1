@@ -1081,8 +1081,9 @@ button:focus-visible,
 @media (max-width: 640px) {
   .music-player {
     left: 12px;
-    right: 12px;
     bottom: 12px;
+    right: auto;
+    width: auto;
   }
 
   .music-panel {
